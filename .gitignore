@@ -1,0 +1,7 @@
+node_modules/
+# Jest reports
+reports/
+
+# Coverage directory
+coverage
+*.lcov
