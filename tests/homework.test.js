@@ -2,22 +2,6 @@ const axios = require('axios');
 
 const baseURL = 'https://jsonplaceholder.typicode.com';
 
-axios.interceptors.request.use(request => {
-    console.log(`🚀 Надсилаємо ${request.method.toUpperCase()} запит на: ${request.url}`);
-    return request;
-}, error => {
-    return Promise.reject(error);
-});
-
-// Логування відповідей
-axios.interceptors.response.use(response => {
-    console.log(`✅ Отримано відповідь: ${response.status} від ${response.config.url}`);
-    return response;
-}, error => {
-    console.log(`❌ Помилка запиту: ${error.response ? error.response.status : error.message}`);
-    return Promise.reject(error);
-});
-
 describe('API Tests', () => {
 
    it('should return a list of users', async () => {
