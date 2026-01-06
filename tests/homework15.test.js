@@ -7,7 +7,7 @@ async function invalidUrl(url) {
         await axios.get(`${url}/invalid`);
     } catch (error) {
         if (error.response) {
-            return error.response.status;
+            return error.response.statusText;
         }
         return error.message;
     }
@@ -29,7 +29,7 @@ describe('API Tests HW 15.1. Error Handling', () => {
     it('1.Error Handling: should handle 404 error when URL is incorrect', async () => {
         const result = await invalidUrl(baseURL);
 
-        expect(result).toBe(404);
+        expect(result).toBe('Not Found');
     });
 
     it('2.Testing Request Headers and Params', async () => {

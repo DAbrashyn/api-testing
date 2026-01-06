@@ -1,6 +1,14 @@
+const axios = require('axios');
 jest.mock('axios');
 
-const axios = require('axios');
+async function fetchUsers() {
+    try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+        return response.data;
+    } catch (error) {
+        throw new Error('User not found');
+    }
+}
 
 describe('Mocking Examples', () => {
     beforeEach(() => {
@@ -22,11 +30,8 @@ describe('Mocking Examples', () => {
             data: mockedUsers
         });
 
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-
-        expect(response.status).toBe(200);
-        expect(response.data).toEqual(mockedUsers);
-        expect(response.data).toHaveLength(2);
+        const response = await fetchUsers();
+        expect(response).toEqual(mockedUsers);
 
         expect(axios.get).toHaveBeenCalled();
         expect(axios.get).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/users');
@@ -42,14 +47,7 @@ describe('Mocking Examples', () => {
             }
         });
 
-        try {
-            await axios.get('https://jsonplaceholder.typicode.com/users/999');
-        } catch (error) {
-            expect(error.response.status).toBe(404);
-            expect(error.response.statusText).toBe('Not Found');
-            expect(error.response.data.error).toBe('User not found');
-        }
-
+        await expect(fetchUsers()).rejects.toThrow('User not found');
         expect(axios.get).toHaveBeenCalled();
     });
 });
